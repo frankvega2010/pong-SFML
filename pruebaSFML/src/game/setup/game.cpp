@@ -2,6 +2,7 @@
 
 #include "SFML/Audio.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 
 #include "Screens/gameplay.h"
 #include "Screens/menu.h"
@@ -33,6 +34,8 @@ namespace Juego
 		Howtoplay
 	};
 
+	sf::RenderWindow window(sf::VideoMode(1300, 800), "Simple! Pong");
+
 	int screenWidth;
 	int screenHeight;
 
@@ -61,7 +64,7 @@ namespace Juego
 
 	static void Init()
 	{
-		sf::RenderWindow window(sf::VideoMode(1300, 800), "Simple! Pong");
+		
 
 		//SetExitKey(0);
 
@@ -108,6 +111,7 @@ namespace Juego
 
 	static void DeInit()
 	{
+		sf::Event event;
 	#ifdef AUDIO
 		UnloadSound(pong_hit_player);
 		UnloadSound(pong_hit_wall);
@@ -119,13 +123,14 @@ namespace Juego
 		UnloadMusicStream(pong_menu_song);
 		CloseAudioDevice();
 	#endif
-		CloseWindow();
+		if (event.type == sf::Event::Closed)
+			window.close();
 	}
 
 	static void Draw()
 	{
-		BeginDrawing();
-		ClearBackground(BLACK);
+		//BeginDrawing();
+		window.clear(sf::Color::Black);
 
 		switch (gamePhase)
 		{
@@ -137,7 +142,7 @@ namespace Juego
 		case Howtoplay: Howtoplay_Section::DrawHowtoplay(); break;
 		}
 
-		EndDrawing();
+		window.display();
 	}
 
 	static void Update()
@@ -276,11 +281,13 @@ namespace Juego
 	void Execute()
 	{
 		Init();
-		while (!WindowShouldClose())
+		while (window.isOpen())
 		{
+
 			Update();
 			if (gamePhase == 0) return;
 			Draw();
+
 		}
 		DeInit();
 	}

@@ -1,13 +1,19 @@
 #include "menu.h"
 
-#include "raylib.h"
-#include "Setup/Game.h"
+
+#include <SFML/Graphics.hpp>
+//#include "raylib.h"
+#include "setup/game.h"
 #include "Setup\Player.h"
 
 using namespace Juego;
 
 namespace Juego
 {
+	sf::Font font;
+
+	sf::Text menuText;
+
 	enum gameActions
 	{
 		Settings = 7,
@@ -22,7 +28,7 @@ namespace Juego
 		static void MenuInput()
 		{
 
-			if (IsKeyPressed(KEY_ONE))
+			/*if (IsKeyPressed(KEY_ONE))
 			{
 				#ifdef AUDIO
 								PlaySound(pong_select_menu);
@@ -73,7 +79,7 @@ namespace Juego
 			{
 				selectOption = QuitGame;
 				isScreenFinished = true;
-			}
+			}*/
 		}
 
 		void UpdateMenuScreen()
@@ -97,14 +103,25 @@ namespace Juego
 
 		void DrawMenu()
 		{
-			DrawText(FormatText("Simple Pong!"), MeasureText("Simple Pong!", 60) / 6, 20, defaultFontSize, WHITE);
+			if (!font.loadFromFile("res\assets\sansation.ttf"))
+			{
+				// error...
+			}
+
+			menuText.setFont(font);
+			menuText.setString("Simple Pong!");
+			menuText.setCharacterSize(defaultFontSize);
+			menuText.setFillColor(sf::Color::White);
+
+			window.draw(menuText);
+			/*DrawText(FormatText("Simple Pong!"), MeasureText("Simple Pong!", 60) / 6, 20, defaultFontSize, WHITE);
 			DrawText(FormatText("1. Player vs CPU"), 10, screenHeight / 6.3, defaultFontSize, WHITE);
 			DrawText(FormatText("2. 2 Players Local"), 10, screenHeight / 4.2, defaultFontSize, WHITE);
 			DrawText(FormatText("3. Options"), 10, screenHeight / 3.2, defaultFontSize, WHITE);
 			DrawText(FormatText("4. How to play"), 10, screenHeight / 2.6, defaultFontSize, WHITE);
 			DrawText(FormatText("5. Credits"), 10, screenHeight / 2.2, defaultFontSize, WHITE);
 			DrawText(FormatText("6. Quit"), 10, screenHeight / 1.9, defaultFontSize, WHITE);
-			DrawText(FormatText("Ver. 1.0 by Franco Vega"), screenWidth / 2.8, screenHeight / 1.1, defaultFontSize, WHITE);
+			DrawText(FormatText("Ver. 1.0 by Franco Vega"), screenWidth / 2.8, screenHeight / 1.1, defaultFontSize, WHITE);*/
 		}
 	}
 }
